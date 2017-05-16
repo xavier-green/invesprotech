@@ -1,0 +1,4 @@
+user_id;portfolio_id;transaction_group_id;quantity;deposit_type;protection;status;treated_date
+2;6;18;100;recurrent;80;done;19/03/2017
+2;7;19;5;ponctuel;90;done;19/03/2017
+2;7;20;2;recurrent;90;done;19/03/2017

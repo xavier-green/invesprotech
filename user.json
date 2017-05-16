@@ -1,0 +1,16 @@
+POST /register
+
+{
+	"fname" : "test",
+	"lname" : "test",
+	"email" : "test@test.com",
+	"password" : "test",
+	"phone" : "1234",
+	"address" : "58 avenu hello",
+	"fiscal_type" : "PERP",
+	"protection" : 80,
+	"cote" : false,
+	"isf" : false,
+	"expose" : false,
+	"entourage_expose" : false
+}

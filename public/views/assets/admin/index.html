@@ -1,0 +1,111 @@
+<html>
+<body>
+<script src="/assets/js/jquery.min.js"></script>
+<script>
+$(document).ready(()=>{
+
+	function gotoDocDate(doc){
+		var from = document.querySelector("input[name='from']").value;
+		var to = document.querySelector("input[name='to']").value;
+		var url = '/'+doc+'/'+from+'_'+to;
+		window.location = url;
+	}
+	$('.dclk').on('click', function(){
+		var doc = $(this).attr('id');
+		var from = document.querySelector("input[name='from']").value;
+		var to = document.querySelector("input[name='to']").value;
+		var url = '/'+doc+'/'+from+'_'+to;
+		window.location = url;
+	})
+	$('.clk').on('click', function(){
+		var doc = $(this).attr('id');
+		window.location = '/'+doc;
+	})
+	$('#history').on('submit', function (e) {
+        e.preventDefault();
+        var $form = $(this);
+        var formData = new FormData();
+	    var file = document.querySelector('input[name="history"]').files[0];
+	    formData.append('file', file);
+	    var xhr = new XMLHttpRequest();
+    	xhr.open('post', $form.attr('action'), true);
+    	xhr.onerror = function(e) {
+	      alert('An error occurred while submitting the form. Maybe your file is too big');
+	    };
+	    xhr.onload = function() {
+	      alert('Done')
+	    };
+	    xhr.send(formData);
+    });
+    $('#allocations').on('submit', function (e) {
+        e.preventDefault();
+        var $form = $(this);
+        var formData = new FormData();
+	    var file = document.querySelector('input[name="allocations"]').files[0];
+	    formData.append('file', file);
+	    var xhr = new XMLHttpRequest();
+    	xhr.open('post', $form.attr('action'), true);
+    	xhr.onerror = function(e) {
+	      alert('An error occurred while submitting the form. Maybe your file is too big');
+	    };
+	    xhr.onload = function() {
+	      alert('Done')
+	    };
+	    xhr.send(formData);
+    });
+    $('#treated').on('submit', function (e) {
+        e.preventDefault();
+        var $form = $(this);
+        var formData = new FormData();
+	    var file = document.querySelector('input[name="treated"]').files[0];
+	    formData.append('file', file);
+	    var xhr = new XMLHttpRequest();
+    	xhr.open('post', $form.attr('action'), true);
+    	xhr.onerror = function(e) {
+	      alert('An error occurred while submitting the form. Maybe your file is too big');
+	    };
+	    xhr.onload = function() {
+	      alert('Done')
+	    };
+	    xhr.send(formData);
+    });
+
+})
+</script>
+<h1>EXPORT</h1>
+<button class='clk' id='userslastexport'>All users since last export</button><br/><br/>
+<button class='clk' id='getallusers'>All users</button><br/><br/>
+<button class='clk' id='getallportfolios'>All portfolios last export</button><br/><br/>
+<div style="border: 1px solid red">
+<button class='clk' id='pending_transactions'>All pending transactions</button></div><br/><br/>
+<button class='clk' id='getalltt'>All treated transactions</button><br/><br/>
+<input type='text' name='from' placeholder="From" />
+<input type='text' name='to' placeholder="To" />
+<button class='dclk' id='ttdate'>Treated transactions for period</button>
+//<b>Date au format: 2017-02-13</b>
+
+<br/><br/>
+<h1>Import</h1>
+<form id="history" method="POST" action="/fileupload">
+	<input type="file" name="history"/>
+	<input type="submit">Import history</input>
+</form><br/>
+<form id="allocations" method="POST" action="/fileupload">
+	<input type="file" name="allocations"/>
+	<input type="submit">Import allocations</input>
+</form><br/>
+<div style="border: 1px solid red">
+<form id="treated" method="POST" action="/fileupload">
+	<input type="file" name="treated"/>
+	<input type="submit">Import treated transactions flag</input>
+</form></div><br/>
+
+
+
+
+
+
+
+
+
+

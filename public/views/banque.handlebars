@@ -1,0 +1,121 @@
+<script src="/assets/plugins/jquery.steps/build/jquery.steps.min.js"></script>
+<script>
+$(document).ready(function(){
+	bank = null;
+
+	stepsWizard = $('#basic-form').children("div").steps({
+		forceMoveForward : true,
+		enablePagination : false,
+	    headerTag: "h3",
+	    bodyTag: "section",
+	    transitionEffect: "slideLeft",
+	    onFinishing: function (event, currentIndex) { 
+	        //NOTE: Here you can do form validation and return true or false based on your validation logic
+	        console.log("Form has been validated!");
+	        return true; 
+	    }, 
+	    onFinished: function (event, currentIndex) {
+	       //NOTE: Submit the form, if all validation passed.
+	        console.log("Form can be submitted using submit method. E.g. $('#basic-form').submit()"); 
+	        $("#basic-form").submit();
+
+	    }
+	});
+	$('.selectBank').on('click',function() {
+		bank = $(this).attr('id');
+		$("#addbank").append('<b>'+bank+'</b>');
+		stepsWizard.steps("next");
+	})
+    $('a.submit').on('click',function(){
+      $('<input />').attr('type', 'hidden')
+            .attr('name', "bank")
+            .attr('value', bank)
+            .appendTo('form#basic-form');
+      $('input[name="epargne"]').val($(this).val().trim().replace("%",""));
+      $('form#basic-form').submit();
+  });
+})
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+    	<div class="card-box">
+    		<h4 class="m-t-0 header-title"><b>Ajout de compte bancaire</b></h4>
+    		<p class="text-muted m-b-30 font-13">
+				Ajouter votre compte bancaire vous permettra de faire des retraits / ajouts.
+			</p>
+			
+			<form id="basic-form" method="POST" action="/api/addbank">
+                <div>
+                    <h3>Choisissez votre banque</h3>
+                    <section>
+                        <div class="form-group clearfix">
+                        <div class="card-box">
+			<h4 class="m-t-0 m-b-20 header-title"><b>Banques partenaires <span class="text-muted">(5)</span></b></h4>
+            
+            
+            <div class="friend-list text-center">
+            	<a href="#" class="selectBank" id="BNP">
+            		<img src="https://lh3.googleusercontent.com/Rhxt0rNzZroh6xr6bj5Pt8rVu5AzYbVPUWL0CfLbZPjo4A9b-eWlEiSZX9PGcKLUbRMz=w300" height="150px" width="150px" class="img-circle"  />
+            	</a>
+            	
+            	<a href="#" class="selectBank" id="Crédit Agricole">
+            		<img src="https://www.credit-agricole.fr/IMG/siteon0.png" height="150px" width="150px" class="img-circle"  />
+            	</a>
+            	
+            	<a href="#" class="selectBank" id="Société Générale">
+            		<img src="http://4.bp.blogspot.com/-ClN_IcRRSNw/TtKmHS82pDI/AAAAAAAABKY/ecLgWjrj16k/s1600/Societe_Generale.png" height="150px" width="150px" class="img-circle"  />
+            	</a>
+            	
+            	<a href="#" class="selectBank" id="HSBC">
+            		<img src="http://mitc.org.my/main/images/Credit%20Card/HSBC.gif" height="150px" width="150px" class="img-circle"  />
+            	</a>
+            	
+            	<a href="#" class="selectBank" id="LCL">
+            		<img src="https://particuliers.secure.lcl.fr/v_1.0/img/icon175x175.png" height="150px" width="150px" class="img-circle"  />
+            	</a>
+            </div>
+		</div>
+                        </div>
+                    </section>
+                    <h3>Entrez vos coordonnées</h3>
+                    <section>
+                        <div class="form-group clearfix">
+                        	<h4 id="addbank">Entrez vos coordonnées bancaires pour </h4>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="col-lg-2 control-label " for="surname"> Nom complet *</label>
+                            <div class="col-lg-10">
+                                <input id="surname" name="fullName" type="text" class="required form-control">
+
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="col-lg-2 control-label " for="email">IBAN *</label>
+                            <div class="col-lg-10">
+                                <input id="email" name="iban" type="text" class="required email form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="col-lg-2 control-label " for="address">Code swift *</label>
+                            <div class="col-lg-10">
+                                <input id="address" name="swift" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="col-lg-12 control-label ">(*) Obligatoire</label>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <a class="submit"><button style="float:right;margin-bottom:200px" type="button" class="btn btn-success waves-effect waves-light">Enregistrer</button></a>
+                        </div>
+                    </section>
+                </div>
+            </form> 
+            
+    	</div>
+	</div>
+</div>

@@ -1,0 +1,50 @@
+{
+  "name": "milvus",
+  "version": "1.0.0",
+  "description": "milvus mvp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MilvusTrading/Milvus.git"
+  },
+  "author": "ayoub mouhieddine & xavier green",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MilvusTrading/Milvus/issues"
+  },
+  "homepage": "https://github.com/MilvusTrading/Milvus#readme",
+  "dependencies": {
+    "axios": "^0.15.3",
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.14.2",
+    "firstline": "^1.2.1",
+    "jsonwebtoken": "^7.2.1",
+    "lodash": "^4.17.3",
+    "method-override": "^2.3.7",
+    "mongodb": "^2.2.16",
+    "mongoose": "^4.7.4",
+    "mongoose-auto-increment": "^5.0.1",
+    "mongoose-autopopulate": "^0.5.0",
+    "mongoose-timestamp": "^0.6.0",
+    "mongoose-timestamps": "0.0.1",
+    "morgan": "^1.7.0",
+    "multer": "^1.3.0",
+    "nodemailer": "^2.7.0",
+    "nodemon": "^1.11.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "q": "^1.4.1",
+    "rand-token": "^0.3.0"
+  }
+}

@@ -1,0 +1,1 @@
+1 * * * * /usr/bin/curl localhost:3000/morning/milvus2017@1 >> log.txt

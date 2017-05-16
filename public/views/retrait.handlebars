@@ -1,0 +1,186 @@
+<script src="/assets/plugins/moment/moment.js"></script>
+
+<script>
+
+  $(document).ready(function() {
+
+    $('input[type="checkbox"][name="recurrent"]').change(function() {
+     if(this.checked) {
+       $('select[name="depot"]').prop('disabled',false);
+       $('input[name="amountr"]').prop('disabled', false);
+       $('input[name="start"]').prop('disabled', false);
+     } else {
+       $('select[name="depot"]').prop('disabled',true);
+       $('input[name="amountr"]').prop('disabled', true);
+       $('input[name="start"]').prop('disabled', true);
+     }
+   });
+
+    function checkDate() {
+      const dateString = $('input[name="start"]').val()
+      const startDateUnix = moment(dateString,"DD/MM/YYYY").unix()
+      const nowUnix = moment(moment().format("DD/MM/YYYY")+" 00:00","DD/MM/YYYY HH:mm").unix()
+      const difference = startDateUnix-nowUnix
+      if (dateString !== "") {
+        if (difference>=0) {
+          return true
+        }
+      }
+      return false
+    }
+
+    $('a#submit_deposit').on('click',function(){
+      const recurrent_checked = $('input[type="checkbox"][name="recurrent"]').is(':checked')
+      const portfolio_not_selected = ($('select[name="portfolio"]').val() == "none")
+      if (portfolio_not_selected) {
+        alert("Veuillez choisir un portfolio")
+      } else {
+        if ((recurrent_checked && checkDate()) || !recurrent_checked) {
+          var a = document.querySelector('form.ponctuel');
+          var postData = [];
+          for(var i=0; i < a.length; i++){
+            var e = a[i];
+            console.log(e.name);
+            if (e.name == "amount") {
+              value_pos = e.value
+              if (value_pos>0) {
+                value_pos = -value_pos
+              }
+              postData.push(e.name+"="+value_pos);
+            } else {
+              postData.push(e.name+"="+e.value); 
+            }
+          }
+          if (recurrent_checked) {
+            var b = document.querySelector('form.recurrent');
+            for(var i=0; i < b.length; i++){
+              var e = b[i];
+              if (e.name == "amountr") {
+                value_pos = e.value
+                if (value_pos>0) {
+                  value_pos = -value_pos
+                }
+                postData.push(e.name+"="+value_pos);
+              } else {
+                postData.push(e.name+"="+e.value); 
+              }
+            }
+          }
+          var stringData = postData.join("&");
+          console.log(stringData);
+          $.ajax({
+            url: "/api/changefunds",
+            type: "post",
+            data: stringData,
+            success: function() {
+              window.location = '/app/transfer';
+            }
+          });
+        } else {
+          alert("Veuillez entrer une date posterieure à aujourd'hui")
+        }
+      }
+    })
+  });
+</script>
+
+<div class="row">
+  <div class="col-sm-12">
+    <h4 class="page-title">Nouveau retrait</h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card-box">
+
+      <div class="row">
+        <div class="col-lg-6">
+          <form class="form-horizontal ponctuel" action="#" method="POST">
+            <input type="hidden" name="deposit_type" value="ponctuel">
+<!--             <div class="form-group">
+              <label class="col-md-2 control-label">Type de compte</label>
+              <div class="col-md-10">
+                <select id="investment_type" name="fiscal_type" class="form-control">
+                  <option value="none">Choisir une valeur</option>
+                  <option value="Compte titre">Compte titres</option>
+                  <option value="Assurance vie">Assurance vie</option>
+                  <option value="PERP">PERP</option>
+                </select>
+              </div>
+            </div> -->
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="example-email">Portfolio</label>
+              <div class="col-md-10">
+                <select id="investment_type" name="portfolio" class="form-control">
+                  <option value="none">Choisir une valeur</option>
+                  {{#each user.portfolios}}
+                  <option value="{{_id._id}}">{{name}}</option>
+                  {{/each}}
+                </select>
+                <a style="margin: 0 auto;display: block;cursor: pointer;" href="/app/new/deposit">
+                 Ajouter un portfolio
+               </a>
+             </div>
+           </div>
+           <div class="form-group">
+            <label class="col-md-2 control-label" for="example-email">Origine</label>
+            <div class="col-md-10">
+              <select id="investment_type" name="bank_origin" class="form-control">
+                <option value="LCL">Compte {{banque}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label">Montant ponctuel</label>
+            <div class="col-md-10">
+              <input type="text" name="amount" placeholder="Veuillez entrer un montant rond en €." class="form-control">
+            </div>
+          </div>
+        </form>
+      </div><!-- end col -->
+
+      <div class="col-lg-6">
+        <form class="form-horizontal recurrent" role="form">
+          <div class="form-group">
+            <label class="col-md-10 control-label">Souhaitez-vous créer un dépôt récurrent ?</label>
+            <div class="col-md-2">
+              <input type="checkbox" name="recurrent" data-plugin="switchery" data-color="#00b19d" data-size="small"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label">Montant récurrent</label>
+            <div class="col-md-10">
+              <input type="text" name="amountr" disabled placeholder="Veuillez entrer un montant récurrent en €." class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="example-email">Type</label>
+            <div class="col-md-10">
+              <select disabled name="depot" class="form-control">
+                <option value="monthly">Mensuel</option>
+                <option value="weekly">Hebdomadaire</option>
+                <option value="daily">Quotidien</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="example-email">Début</label>
+            <div class="col-md-10">
+              <input type="text" name="start" disabled placeholder="Veuillez entrer une date: jour/mois/année (ex: 28/07/2017)." class="form-control">
+            </div>
+          </div>
+        </form>
+      </div><!-- end col -->
+
+    </div><!-- end row -->
+  </div>
+</div><!-- end col -->
+</div>
+<!-- end row -->
+
+<div class="row">
+  <div class="dropdown pull-right">
+    <a id="submit_deposit"><button class="btn btn-success waves-effect waves-light">Enregistrer</button></a>
+  </div>
+</div>

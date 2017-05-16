@@ -1,0 +1,1 @@
+timport trasac_id,status

@@ -1,0 +1,94 @@
+<script type="text/javascript">
+$(window).load(function(){
+  var $container = $('.portfolioContainer');
+  $container.isotope({
+    filter: '*',
+    animationOptions: {
+      duration: 750,
+      easing: 'linear',
+      queue: false
+    }
+  });
+  $('.image-popup').magnificPopup({
+    type: 'image',
+    closeOnContentClick: true,
+    mainClass: 'mfp-fade',
+    gallery: {
+      enabled: true,
+      navigateByImgClick: true,
+      preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+    }
+  });
+  $('.portfolioFilter a').click(function(){
+    $('.portfolioFilter .current').removeClass('current');
+    $(this).addClass('current');
+
+    var selector = $(this).attr('data-filter');
+    $container.isotope({
+      filter: selector,
+      animationOptions: {
+        duration: 750,
+        easing: 'linear',
+        queue: false
+      }
+    });
+    return false;
+  });
+});
+</script>
+
+<div class="row">
+  <div class="col-sm-12">
+    <h4 class="page-title">Portfolios
+    <div class="dropdown pull-right">
+      <a href="/app/new/portfolios"><button class="btn btn-success waves-effect waves-light">Nouveau portfolio <i class="fa fa-plus"></i></button></a>
+    </div>
+    </h4>
+  </div>
+</div>
+
+
+<!-- SECTION FILTER
+================================================== -->
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 ">
+    <div class="portfolioFilter">
+      <a href="#" data-filter="*" class="current waves-effect waves-custom">Tous</a>
+      <a href="#" data-filter=".av" class="waves-effect waves-custom">Assurance vie</a>
+      <a href="#" data-filter=".ct" class="waves-effect waves-custom">Compte titres</a>
+      <a href="#" data-filter=".pe" class="waves-effect waves-custom">PERP</a>
+    </div>
+  </div>
+</div>
+
+<div class="row port m-b-20">
+  <div class="portfolioContainer">
+
+    {{#each user.portfolios}}
+        <div style="cursor: pointer;" onClick="window.location = '/app/portfolio/{{_id._id}}'" class="col-sm-6 col-lg-3 col-md-4 {{class}}">
+          <div class="card-box project-box">
+              <h4 class="m-t-0 m-b-5"><a href="/app/portfolio/{{_id._id}}" class="text-inverse">{{name}}</a></h4>
+              <p class="text-success text-uppercase m-b-20 font-13">{{_id.fiscal_type}}</p>
+              <ul class="list-inline">
+                  <li>
+                      <h3 class="m-b-0">{{_id.plus_value}} €</h3>
+                      <p class="text-muted">Plus-value</p>
+                  </li>
+                  <li>
+                      <h3 class="m-b-0">{{_id.net_asset_value}} €</h3>
+                      <p class="text-muted">Valeur</p>
+                  </li>
+              </ul>
+              <p class="font-600 m-b-5">Protection <span class="text-success pull-right">{{_id.protection_level}}%</span></p>
+              <div class="progress progress-bar-success-alt progress-sm m-b-5">
+                  <div class="progress-bar progress-bar-success progress-animated wow animated animated"
+                       role="progressbar" aria-valuenow="{{_id.protection_level}}" aria-valuemin="0" aria-valuemax="100"
+                       style="width: {{_id.protection_level}}%; visibility: visible; animation-name: animationProgress;">
+                  </div><!-- /.progress-bar .progress-bar-danger -->
+              </div><!-- /.progress .no-rounded -->
+          </div>
+        </div>
+    {{/each}}
+
+  </div><!-- end portfoliocontainer-->
+</div> <!-- End row -->

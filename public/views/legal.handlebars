@@ -1,0 +1,183 @@
+<script src="/assets/plugins/jquery.steps/build/jquery.steps.min.js"></script>
+<script src="/assets/plugins/fileuploads/js/dropify.js"></script>
+<script>
+  $(document).ready(function(){
+   bank = null;
+   $('.dropify').dropify({
+    messages: {
+      default: 'Glissez-déposez un fichier ici ou cliquez',
+      replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+      remove:  'Supprimer',
+      error:   'Désolé, le fichier trop volumineux'
+    }
+  });
+
+   stepsWizard = $('#basic-form').children("div").steps({
+    forceMoveForward : true,
+    enablePagination : false,
+    headerTag: "h3",
+    bodyTag: "section",
+    transitionEffect: "slideLeft",
+    onFinishing: function (event, currentIndex) { 
+	        //NOTE: Here you can do form validation and return true or false based on your validation logic
+	        console.log("Form has been validated!");
+	        return true; 
+       }, 
+       onFinished: function (event, currentIndex) {
+	       //NOTE: Submit the form, if all validation passed.
+         console.log("Form can be submitted using submit method. E.g. $('#basic-form').submit()"); 
+         $("#basic-form").submit();
+
+       }
+     });
+   $('.suivant_file').on('click',function() {
+      let li_length = $("ul.files_here li").length
+      if (li_length>0) {
+        stepsWizard.steps("next");
+      } else {
+        $('#file_select').show();
+      }
+    })
+   $('.suivant').on('click',function() {
+    stepsWizard.steps("next");
+  })
+   $('a.submit').on('click',function(){
+    let cond = $('input[name="conditut"]').is(':checked');
+    if (cond == true) {
+      // alert("ok");
+      $('form#basic-form').submit();
+    } else {
+      $('#acceptcond').show();
+    }
+  });
+
+   $('.dropify').on('change', ()=>{
+    var filename = $('input[type=file]').val().split('\\').pop();
+    $("ul.files_here").append('<li>'+filename+'</li>');
+    $('#file_select').hide();
+  })
+
+ })
+</script>
+
+<div class="row">
+  <div class="col-md-12">
+   <div class="card-box">
+    <h4 class="m-t-0 header-title"><b>Finissez votre inscription</b></h4>
+    <p class="text-muted m-b-30 font-13">
+      Ces derniers éléments sont nécessaire pour la définition d'un contrat avec Milvus.
+    </p>
+
+    <form id="basic-form" method="POST" action="/api/addlegal">
+      <div>
+        <h3>Documents d'identité</h3>
+        <section>
+          <div class="form-group clearfix">
+            <div class="card-box">
+
+              <h4 class="header-title m-t-0 m-b-30">Pièce d'identité
+                <p class="text-muted m-b-30 font-13">
+                  Nous avons besoin d'une photocopie de votre passeport ou carte d'identité.
+                </p>
+              </h4>
+
+              <ul class="files_here"></ul>
+
+              <input type="file" class="dropify" name="piece_identite" />
+              <p id="file_select" style="color:red;display:none">Veuillez selectionner un fichier</p>
+            </div>
+          </div>
+          <div class="form-group clearfix">
+            <a class="suivant_file"><button style="float:right;margin-bottom:200px" type="button" class="btn btn-success waves-effect waves-light">Suivant</button></a>
+          </div>
+        </section>
+        <h3>Questionnaire légal</h3>
+        <section>
+         <div class="row">
+          <div class="form-group clearfix">
+            <label class="col-md-10 control-label ">Êtes-vous dirigant ou salarié d'une société cotée ?</label>
+            <div class="col-md-2">
+              <label class="radio-inline" for="Dinner-0">
+                <input type="radio" name="cote" id="sex" value="true">
+                Oui
+              </label>
+              <label class="radio-inline" for="Dinner-1">
+                <input type="radio" checked name="cote" id="sex" value="false">
+                Non
+              </label>
+            </div>
+          </div>
+          <div class="form-group clearfix">
+            <label class="col-md-10 control-label ">Êtes-vous assujetti à l'ISF ?</label>
+            <div class="col-md-2">
+              <label class="radio-inline" for="Dinner-0">
+                <input type="radio" name="isf" id="sex" value="true">
+                Oui
+              </label>
+              <label class="radio-inline" for="Dinner-1">
+                <input type="radio" checked name="isf" id="sex" value="false">
+                Non
+              </label>
+            </div>
+          </div>
+          <div class="form-group clearfix">
+            <label class="col-md-10 control-label ">
+              Exercez-vous une fonction politiquement exposée ?<br/>
+              <small>Par exemple: ministre, embassadeur, parlementaire, administrateur d'une entreprise publique...</small>
+            </label>
+            <div class="col-md-2">
+              <label class="radio-inline" for="Dinner-0">
+                <input type="radio" name="expose" id="sex" value="true">
+                Oui
+              </label>
+              <label class="radio-inline" for="Dinner-1">
+                <input type="radio" checked name="expose" id="sex" value="false">
+                Non
+              </label>
+            </div>
+          </div>
+          <div class="form-group clearfix">
+            <label class="col-md-10 control-label ">Une personne de votre entourage exerce-t-elle ou a-t-elle exercé depuis moins d'un an une fonction politiquement exposée ?</label>
+            <div class="col-md-2">
+              <label class="radio-inline" for="Dinner-0">
+                <input type="radio" name="entourage_expose" id="sex" value="true">
+                Oui
+              </label>
+              <label class="radio-inline" for="Dinner-1">
+                <input type="radio" checked name="entourage_expose" id="sex" value="false">
+                Non
+              </label>
+            </div>
+          </div>
+        </div><br/><br/>
+
+        <div class="form-group clearfix">
+        <a class="suivant"><button style="float:right;margin-bottom:200px" type="button" class="btn btn-success waves-effect waves-light">Suivant</button></a>
+        </div>
+      </section>
+      <h3>Contrat final</h3>
+      <section>
+       <div class="row">
+        <div class="form-group clearfix">
+          <div class="col-lg-12">
+            <div class="checkbox checkbox-primary">
+              <input id="checkbox-h1" name="conditut" type="checkbox" required>
+              <label for="checkbox-h1">
+                J'accepte les <a>conditions d'utilisation</a>.
+              </label>
+              <p id="acceptcond" style="color:red;display:none">Veuillez accepter les conditions d'utilisation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group clearfix">
+        <a class="submit"><button style="float:right;margin-bottom:200px" type="button" class="btn btn-success waves-effect waves-light">Terminer</button></a>
+      </div>
+    </section>
+  </div>
+</form> 
+
+</div>
+</div>
+</div>

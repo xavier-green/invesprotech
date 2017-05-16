@@ -1,0 +1,9 @@
+/addportfolio
+
+{
+	"email" : "test@test.com",
+	"name" : "testport",
+	"universe" : 1,
+	"fiscal_type" : "ERP",
+	"protection" : 80
+}

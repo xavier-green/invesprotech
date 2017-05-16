@@ -1,0 +1,473 @@
+<div class="wrapper">
+  <div class="container">
+
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div id="progressbarwizard" class="pull-in">
+          <ul>
+            <li><a href="#profile" data-toggle="tab">Profil / Situation <span class="sit_track" style="text-decoration:none !important">(1/2)</span></a></li>
+            <li><a href="#plan" data-toggle="tab">Solution d'investissement</a></li>
+            <li><a href="#inscription" data-toggle="tab">Inscription / Contact</a></li>
+          </ul>
+
+          <div class="tab-content b-0 m-b-0" style="padding:2% 10% 2% 10%">
+
+            <div id="bar" class="progress progress-striped progress-bar-primary-alt active">
+              <div class="bar progress-bar progress-bar-primary"></div>
+            </div>
+            <div class="tab-pane p-t-10 fade" id="profile">
+                <div class="row">
+                  <div id="situation">
+                    <form method="POST" id="register" action="/register">
+                    <h3>Situation</h3>
+                    <div class="form-group clearfix">
+                      <label class="col-md-3 control-label "></label>
+                      <div class="col-md-9">
+                        <label class="radio-inline" for="Dinner-0">
+                          <input type="radio" name="sex" id="sex" value="Femme">
+                          Madame
+                        </label>
+                        <label class="radio-inline" for="Dinner-1">
+                          <input type="radio" name="sex" id="sex" value="Homme">
+                          Monsieur
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group clearfix">
+                      <label class="col-md-3 control-label " for="userName1">Age</label>
+                      <div class="col-md-9">
+                        <input data-validation="number" type="text" name="age" class="form-control" placeholder="Veuillez entrer votre age">
+                      </div>
+                    </div>
+                    <div class="form-group clearfix">
+                      <label class="col-md-3 control-label " for="password1">Situation familiale</label>
+                      <div class="col-md-9">
+                        <select id="family_situation" name="family_situation" class="form-control">
+                          <option value="none">Veuillez choisir une option</option>
+                          <option value="Célibataire">Célibataire</option>
+                          <option value="Marrié">Marrié</option>
+                          <option value="Pacté">Pacté</option>
+                          <option value="Divorcé">Divorcé</option>
+                          <option value="Concubinage">Concubinage</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group clearfix">
+                      <label class="col-md-3 control-label lalala" for="userName1">Enfants à charge</label>
+                      <div class="col-md-9">
+                        <input type="text" name="children" placeholder="Veuillez entrer votre nombre d'enfants à charge" class="form-password form-control" id="form-password">
+                      </div>
+                    </div>
+                    <div class="form-group clearfix">
+                      <label class="col-md-3 control-label " for="confirm1">Situation professionnelle</label>
+                      <div class="col-md-9">
+                        <select name="job_categ" class="form-control">
+                          <option value="none">Veuillez choisir une option</option>
+                          <option value="Agriculteurs exploitants">Agriculteurs exploitant</option>
+                          <option value="Artisans">Artisans</option>
+                          <option value="Commerçant">Commerçants</option>
+                          <option value="Chef d’entreprise">Chefs d’entreprise</option>
+                          <option value="Cadres et professions intellectuelles supérieures">Cadres et professions intellectuelles supérieures</option>
+                          <option value="Professions Intermédiaires">Professions Intermédiaires</option>
+                          <option value="Professions Libérales">Professions libérales</option>
+                          <option value="Employés">Employés</option>
+                          <option value="Autre">Autre</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="patrimoine">
+                    <div class="row">
+                      <h3>Capacité d'épargne et patrimoine</h3>
+                      <div class="form-group clearfix">
+                        <label class="col-md-3 control-label " for="userName1">Revenu annuel</label>
+                        <div class="col-md-9">
+                          <input data-validation="number" type="text" name="revenue" placeholder="Veuillez entrez votre revenu moyen annuel en €" class="form-password form-control" id="form-password">
+                        </div>
+                      </div>
+                      <div class="form-group clearfix">
+                        <label class="col-md-3 control-label " for="userName1">Montant d'épargne annuelle</label>
+                        <div class="col-md-9">
+                          <input data-validation="number" type="text" name="epargne" placeholder="Entrez votre épargne annuelle moyenne en €" class="form-password form-control" id="form-password">
+                        </div>
+                      </div>
+                      <div class="form-group clearfix">
+                        <label class="col-md-3 control-label " for="userName1">Patrimoine immobilier</label>
+                        <div class="col-md-9">
+                          <label class="radio-inline">
+                            <input type="checkbox" name="locataire" value="Locataire">
+                            Locataire
+                          </label>
+                          <label class="radio-inline">
+                            <input type="checkbox" name="proprietaire" value="Propriétaire">
+                            Propriétaire
+                          </label>
+                          <label class="radio-inline">
+                            <input type="checkbox" name="investisseur" value="Investisseur locatif">
+                            Investisseur locatif
+                          </label>
+                        </div>
+                      </div>
+                      <h3 class="divider"></h3>
+                      <h3>Experience en gestion d'épargne</h3>
+                      <div class="form-group clearfix">
+                        <label class="col-md-3 control-label " for="password1">Avez-vous déjà une :</label>
+                        <div class="col-md-9">
+                          <label class="radio-inline">
+                            <input type="checkbox" name="assurance" value="Assurance vie">
+                            Assurance vie
+                          </label>
+                          <label class="radio-inline">
+                            <input type="checkbox" name="pea" value="PEA">
+                            PEA
+                          </label>
+                          <label class="radio-inline">
+                            <input type="checkbox" name="perp" value="PERP">
+                            PERP
+                          </label>
+                          <label class="radio-inline">
+                            <input type="checkbox" name="pee" value="PEE/PEEI">
+                            PEE/PEEI
+                          </label>
+                          <label class="radio-inline">
+                            <input type="checkbox" name="cmpt" value="Compte titre">
+                            Compte titre
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group clearfix">
+                        <label class="col-md-3 control-label " for="userName1">Avez vous déjà subi des pertes de vos placements financiers ?</label>
+                        <div class="col-md-9">
+                          <label class="radio-inline" for="Dinner-0">
+                            <input type="radio" name="pertes" id="newsletter" value="Non" checked="checked">
+                            Non
+                          </label>
+                          <label class="radio-inline" for="Dinner-1">
+                            <input type="radio" name="pertes" id="newsletter" value="10">
+                            Oui : 0% - 10%
+                          </label>
+                          <label class="radio-inline" for="Dinner-1">
+                            <input type="radio" name="pertes" id="newsletter" value="20">
+                            Oui : 10% - 20%
+                          </label>
+                          <label class="radio-inline" for="Dinner-1">
+                            <input type="radio" name="pertes" id="newsletter" value="40">
+                            Oui : 20% - 40%
+                          </label>
+                          <label class="radio-inline" for="Dinner-1">
+                            <input type="radio" name="pertes" id="newsletter" value="100">
+                            Oui : +40%
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane p-t-10 fade" id="plan">
+
+                <div class="row">
+                  <h4 id="no_sol_invest" class="text-center" style="color:red;display:none">Veuillez choisir une solution d'investissement</h4>
+                  <div class="col-md-3">
+                    <div class="text-center card-box" id="rendement_optimal,80">
+                      <div>
+                        <small class="">Recherche de rendement</small>
+                        <h1 class="" style="line-height:10px;margin-bottom:40px">Optimal</h1>
+
+                        <p class="text-left  font-13"><strong>Protection :</strong> <span class="m-l-15">80%</span></p>
+
+                        <p class="text-left  font-13"><strong>Horizon :</strong><span class="m-l-15">Long terme</span></p>
+
+                        <div class="text-left" style="min-height:80px">
+                          <p class=" font-13"><strong>Mieux adapté aux projets :</strong>
+                            <span class="m-l-15">
+                              <ul>
+                                <li class=" font-13">Immobilier</li>
+                                <li class=" font-13">éducation des enfants</li>
+                              </ul>
+                            </span>
+                          </p>
+                        </div>
+
+                        <br/>
+                        <button target="80_simulation" id="80" type="button" class="btn btn-custom btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".bs-example-modal-lg">Voir simulation</button>
+                        <button style="margin-top:10px" type="button" class="80_simulation selectinvest btn btn-success btn-rounded waves-effect waves-light">Selectionner</button>
+                      </div>
+
+                    </div>
+
+                  </div> <!-- end col -->
+
+                  <div class="col-md-3">
+                    <div class="text-center card-box" id="rendement_interessant,90">
+                      <div>
+                        <small class="">Recherche de rendement</small>
+                        <h1 class="" style="line-height:10px;margin-bottom:40px">Interessant</h1>
+
+                        <p class="text-left  font-13"><strong>Protection :</strong> <span class="m-l-15">90%</span></p>
+
+                        <p class="text-left  font-13"><strong>Horizon :</strong><span class="m-l-15">Moyen terme</span></p>
+
+                        <div class="text-left" style="min-height:80px">
+                          <p class=" font-13"><strong>Mieux adapté aux projets :</strong>
+                            <span class="m-l-15">
+                              <ul>
+                                <li class=" font-13">Rente pour la retraite</li>
+                              </ul>
+                            </span>
+                          </p>
+                        </div>
+
+                        <br/>
+                        <button target="90_simulation" id="90" type="button" class="btn btn-custom btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".bs-example-modal-lg">Voir simulation</button>
+                        <button style="margin-top:10px" type="button" class="90_simulation selectinvest btn btn-success btn-rounded waves-effect waves-light">Selectionner</button>
+                      </div>
+
+                    </div>
+
+                  </div> <!-- end col -->
+
+                  <div class="col-md-3">
+                    <div class="text-center card-box" id="rendement_modere,95">
+                      <div>
+                        <small class="">Recherche de rendement</small>
+                        <h1 class="" style="line-height:10px;margin-bottom:40px">Modéré</h1>
+
+                        <p class="text-left  font-13"><strong>Protection :</strong> <span class="m-l-15">95%</span></p>
+
+                        <p class="text-left  font-13"><strong>Horizon :</strong><span class="m-l-15">Court terme</span></p>
+
+                        <div class="text-left" style="min-height:80px">
+                          <p class=" font-13"><strong>Mieux adapté aux projets :</strong>
+                            <span class="m-l-15">
+                              <ul>
+                                <li class=" font-13">Préservation du pouvoir d'achat</li>
+                              </ul>
+                            </span>
+                          </p>
+
+                        </div>
+                        <br/>
+                        <button target="95_simulation" id="95" type="button" class="btn btn-custom btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".bs-example-modal-lg">Voir simulation</button>
+                        <button style="margin-top:10px" type="button" class="95_simulation selectinvest btn btn-success btn-rounded waves-effect waves-light">Selectionner</button>
+                      </div>
+
+                    </div>
+
+                  </div> <!-- end col -->
+
+                  <div class="col-md-3">
+                    <div class="text-center card-box" id="rendement_faible,custom">
+                      <div>
+                        <small class="">Recherche de rendement</small>
+                        <h1 class="" style="line-height:10px;margin-bottom:40px;text-align: center;font-size: 30px">Personnalisé</h1>
+
+                        <p class="text-left  font-13"><strong>Protection :</strong>
+                        <span class="m-l-15">
+                          <input name='custom_protection_level' value='100%' />
+                        </span>
+                        </p>
+
+                        <p class="text-left  font-13"><strong>Horizon :</strong><span class="m-l-15">NA</span></p>
+
+                        <div class="text-left" style="min-height:55px">
+                          <p class=" font-13"><strong>Mieux adapté aux projets :</strong>
+                            <span class="m-l-15">
+                              <ul>
+                                <li class=" font-13">NA</li>
+                              </ul>
+                            </span>
+                          </p>
+                        </div>
+
+                        <br/>
+                        <button id="custom" target="custom_protection" type="button" class="btn btn-custom btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".bs-example-modal-lg">Voir simulation</button>
+                        <button style="margin-top:10px" type="button" class="custom_protection selectinvest btn btn-success btn-rounded waves-effect waves-light">Selectionner</button>
+                      </div>
+
+                    </div>
+
+                  </div> <!-- end col -->
+
+
+                </div>
+                <!-- end row -->
+              </div>
+              <div class="tab-pane p-t-10 fade" id="inscription">
+                <div class="row">
+                  <div class="form-group clearfix">
+                    <label class="col-md-3 control-label " for="userName1">Nom *</label>
+                    <div class="col-md-9">
+                      <input id="last_name" name="lname" placeholder="Veuillez entrer votre nom" type="text" class="form-control" required>
+                      <span id="lname_error" style="color:red;display: none;">Uniquement les lettres sont autorisées</span>
+                    </div>
+                  </div>
+                  <div class="form-group clearfix">
+                    <label class="col-md-3 control-label " for="userName1">Prénom *</label>
+                    <div class="col-md-9">
+                      <input name="fname" placeholder="Veuillez entrer votre prénom" type="text" class="required form-control" required>
+                      <span id="fname_error" style="color:red;display: none;">Uniquement les lettres sont autorisées</span>
+                    </div>
+                  </div>
+                  <div class="form-group clearfix">
+                    <label class="col-md-3 control-label " for="userName1">Téléphone *</label>
+                    <div class="col-md-9">
+                      <input type="text" name="phone" placeholder="Entrez votre numéro de téléphone complet (ex: +33 6 11 22 33 44)" class="form-password form-control" id="form-password" required>
+                      <span id="phone_error" style="color:red;display: none;">Uniquement les chiffres sont autorisées</span>
+                    </div>
+                  </div>
+                  <div class="form-group clearfix">
+                    <label class="col-md-3 control-label " for="userName1">Adresse complète *</label>
+                    <div class="col-md-9">
+                      <input type="text" name="address" placeholder="Entrez votre adresse complette (numéro, rue, code postal, ville, pays)" class="form-password form-control" id="form-password" required>
+                      <span id="address_error" style="color:red;display: none;">Charactères non autorisés</span>
+                    </div>
+                  </div>
+                  <div class="form-group clearfix">
+                    <label class="col-md-3 control-label " for="userName1">Email *</label>
+                    <div class="col-md-9">
+                      <input id="email1" name="email" placeholder="Veuillez entrer votre email" type="email" class="required email form-control" required>
+                      <span id="email_error" style="color:red;display: none;">Entrez un email valide</span>
+                    </div>
+                  </div>
+                  <div class="form-group clearfix">
+                    <label class="col-md-3 control-label " for="password">Mot de passe *</label>
+                    <div class="col-md-9">
+                      <input type="password" name="password" placeholder="Le mot de passe doit faire au moins 8 caractères, avec au moins un chiffre et une majuscule" class="form-username form-control" id="form-username" required>
+                    </div>
+                  </div>
+                  <div class="form-group clearfix">
+                    <label class="col-md-3 control-label " for="confirmation">Confirmation du mot de passe *</label>
+                    <div class="col-md-9">
+                      <input type="password" name="confirmation" placeholder="Veuillez confirmer le mot de passe" class="form-password form-control" id="form-password" required>
+                      <span id="confirmation_error" style="color:red;display: none;">Les mots de passe ne coincident pas.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ul class="pager m-b-0 wizard">
+                <li class="avant" style="display:none"><a href="#" class="pull-left btn btn-primary waves-effect waves-light">Précédent</a></li>
+                <li class="previous"><a href="#" class="btn btn-primary waves-effect waves-light">Précédent</a></li>
+                <li class="button-last" style="display:none;"><a href="#" style="float:right" class="submit btn btn-primary waves-effect waves-light">Finir</a></li>
+                <li class="next"><a href="#" class="next btn btn-primary waves-effect waves-light">Suivant</a></li>
+              </form>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="footer text-right">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6">
+            2017 © Milvus.
+          </div>
+          <div class="col-xs-6">
+            <ul class="pull-right list-inline m-b-0">
+              <li>
+                <a href="#">Aide</a>
+              </li>
+              <li>
+                <a href="#">Contact</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+  </div>
+  <!-- end container -->
+
+</div>
+
+<div id="custom-width-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog" style="width:90%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title text-center" id="custom-width-modalLabel">Simulation historique sur les 10 dernières années *</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          L'objectif de cette simulation étant de vous permettre de mieux appréhender, à travers des données historiques
+          sur les 10 dernières années, le comportement de cette solution lors des différentes phases de cycle économique
+          (expansion, crise, stagnation).
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <h4>Hypothèses</h4>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><strong>Premier versement (en €)</strong></div>
+              <div class="col-md-4"><input type="text" value="1000" id="pversement" /></div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><strong>Versement régulier</strong></div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><strong>Fréquence</strong></div>
+              <div class="col-md-4">
+                <select name="versement_freq" class="form-control">
+                  <option value="30">Mensuel</option>
+                  <option value="1">Journalier</option>
+                  <option value="7">Hebdomadaire</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><strong>Montant (en €)</strong></div>
+              <div class="col-md-4"><input type="text" value="83" id="pmontant" /></div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><strong>TOTAL versements</strong></div>
+              <div class="col-md-4"><span id="totalvers">10 000</span> €</div>
+            </div>
+            <div class="row">
+              <h4>Résultat de simulation (frais inclus)</h4>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><strong>Rendement annuel moyen</strong></div>
+              <div class="col-md-4">8,56 %</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><strong>Performance en 10 ans</strong></div>
+              <div class="col-md-4">17,1 %</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><strong>Valeur d'épargne</strong></div>
+              <div class="col-md-4"><span id="vepargne">16877</span> €</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><strong>Valeur d'épargne protégée</strong></div>
+              <div class="col-md-4"><span id="vproteg">16877</span> €</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h4 id="disapear">Chargement...</h4>
+            <div id="chart">
+              <svg></svg>
+            </div>
+            <!-- <h4 id="disapear">Chargement...</h4>
+            <div id="morris-area-with-dotted"></div> -->
+          </div>
+        </div>
+        <div class="row">
+          <small>* Source de données : Milvus, date de données : du 01/02/2000 au 03/02/2013. Les performances passées
+            ne sont pas un indicateur fiable des performances futures</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Fermer</button>
+        <a href="#" class="select_simulation btn btn-primary waves-effect waves-light" data-dismiss="modal">Choisir</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

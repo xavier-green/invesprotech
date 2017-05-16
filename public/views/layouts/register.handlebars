@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
+  <meta name="author" content="Coderthemes">
+
+  <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+  <title>Milvus</title>
+
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/core.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/components.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/pages.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/menu.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
+
+  <link href="assets/css/nv.d3.min.css" rel="stylesheet" type="text/css" />
+
+  <link href="assets/plugins/custombox/dist/custombox.min.css" rel="stylesheet">
+
+  <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <script src="assets/js/modernizr.min.js"></script>
+
+
+</head>
+
+
+<body>
+
+  <!-- Navigation Bar-->
+  <header id="topnav">
+    <div class="topbar-main">
+      <div class="container">
+
+        <div class="topbar-left">
+          <a href="index.html" class="logo"><span>Milvus<span></span></span></a>
+        </div>
+
+      </div>
+    </div>
+
+  </header>
+  <!-- End Navigation Bar-->
+
+  {{{body}}}
+
+  <!-- jQuery  -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/detect.js"></script>
+  <script src="assets/js/fastclick.js"></script>
+  <script src="assets/js/jquery.slimscroll.js"></script>
+  <script src="assets/js/jquery.blockUI.js"></script>
+  <script src="assets/js/waves.js"></script>
+  <script src="assets/js/wow.min.js"></script>
+  <script src="assets/js/jquery.nicescroll.js"></script>
+  <script src="assets/js/jquery.scrollTo.min.js"></script>
+
+  <script src="assets/plugins/custombox/dist/custombox.min.js"></script>
+  <script src="assets/plugins/custombox/dist/legacy.min.js"></script>
+
+
+  <!-- App js -->
+  <script src="assets/js/jquery.core.js"></script>
+  <script src="assets/js/jquery.app.js"></script>
+
+  <!-- Form wizard -->
+  <script src="assets/plugins/bootstrap-wizard/jquery.bootstrap.wizard.js"></script>
+
+  <script src="assets/plugins/morris/morris.min.js"></script>
+  <script src="assets/plugins/raphael/raphael-min.js"></script>
+
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+  <script type="text/javascript" src="assets/js/validation_fr.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+  <script src="assets/js/nv.d3.min.js"></script>
+
+  <script type="text/javascript">
+  let bar = null;
+  let simulationType = 80;
+  $(document).ready(function() {
+    let rendement = null;
+    let fiscal = "PERP";
+    $('a[href="#collapseOne"]').click();
+    $('a[href="#pexpli"]').click();
+    $('a[href="#cexpli"]').click();
+    $("#patrimoine").hide();
+    $('.selectinvest').click(function(){
+      let self = $(this);
+      $(".col-md-3 > div.card-box").each(function(i,val){
+        $(this).css('border','none')
+      })
+      rendement = self.parent().parent().attr('id');
+      self.parent().parent().css('border','1px solid #0eac5c');
+      $('#no_sol_invest').hide();
+    })
+    $('button.btn-info').on('click', function(){
+      $('div.panel-info').css('border','1px solid #21afda');
+      $('div.panel-success').css('border','none');
+      $('div.panel-pink').css('border','none');
+      fiscal = $(this).attr('id');
+    });
+    $('button.btn-success').on('click', function(){
+      $('div.panel-info').css('border','none');
+      $('div.panel-success').css('border','1px solid #0eac5c');
+      $('div.panel-pink').css('border','none');
+      fiscal = $(this).attr('id');
+    });
+    $('button.btn-pink').on('click', function(){
+      $('div.panel-info').css('border','none');
+      $('div.panel-success').css('border','none');
+      $('div.panel-pink').css('border','1px solid #ff70c1');
+      fiscal = $(this).attr('id');
+    });
+    $('#progressbarwizard').bootstrapWizard({onTabShow: function(tab, navigation, index) {
+      let $total = navigation.find('li').length;
+      let $current = index+1;
+      let $percent = ($current/$total) * 100;
+      $('li.button-last').hide();
+      $('li.next').show();
+      if (index == 0) {
+        $('li.previous').hide();
+        $("#patrimoine").hide();
+        $("#situation").fadeIn();
+        $('.sit_track').text('(1/2)');
+      } else {
+        $('li.previous').show();
+      }
+      if (index == 2) {
+        $('li.button-last').show();
+        $('li.next').hide();
+      }
+      $('#progressbarwizard').find('.bar').css({width:$percent+'%'});
+    },
+    onTabClick: function(tab, navigation, index) {
+      return false;
+    },
+    'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted',
+    'lastSelector': '.button-last',
+    onNext: function(tab, navigation, index) {
+      if ($('input[name="lname"]').is(":visible")) {
+        $(".error").html('');
+        $(".error").removeClass("error");
+        var okay = ($('input[name="lname"]').valid() && $('input[name="fname"]').valid() && $('input[name="phone"]').valid() && $('input[name="address"]').valid() && $('input[name="email"]').valid() && $('input[name="password"]').valid() && $('input[name="confirmation"]').valid())
+        return okay;
+      }
+      $('div.panel-success').css('border','none');
+      $('div.panel-pink').css('border','none');
+      $('div.panel-info').css('border','none');
+      if (index == 1 && $("#situation").is(":visible")) {
+        $("#situation").hide();
+        $("#patrimoine").fadeIn();
+        $('#progressbarwizard').find('.bar').css({width:'30%'});
+        $('.sit_track').text('(2/2)');
+        $('li.avant').show();
+        return false;
+      } else {
+        $('li.avant').hide();
+      }
+      if (index == 2) {
+        if (rendement == null) {
+          $('#no_sol_invest').fadeIn();
+          return false;
+        }
+      }
+    }
+  });
+  $('a.submit').on('click',function(){
+    if (fiscal == "" || fiscal == null) {
+        fiscal = "PERP";
+      }
+      let protection = 80;
+      if (rendement.indexOf(",")>(-1)) {
+        protection = rendement.split(",")[1];
+        if (protection == 'custom') {
+          protection = $("input[name='custom_protection_level']").val().trim().replace("%","");
+        }
+      }
+      $('<input />').attr('type', 'hidden')
+            .attr('name', "fiscal_type")
+            .attr('value', fiscal)
+            .appendTo('form#register');
+      $('<input />').attr('type', 'hidden')
+            .attr('name', "protection")
+            .attr('value', protection)
+            .appendTo('form#register');
+      $('<input />').attr('type', 'hidden')
+            .attr('name', "numerics_fversement")
+            .attr('value', $('input#pmontant').val())
+            .appendTo('form#register');
+      $('<input />').attr('type', 'hidden')
+            .attr('name', "numerics_pversement")
+            .attr('value', $('input#pversement').val())
+            .appendTo('form#register');
+      $('<input />').attr('type', 'hidden')
+            .attr('name', "numerics_freq")
+            .attr('value', $('select[name="versement_freq"]').val())
+            .appendTo('form#register');
+      $('input[name="epargne"]').val($(this).val().trim().replace("%",""));
+      $('form#register').submit();
+  });
+
+  $('li.avant').on('click', function(){
+    $(this).hide();
+    $('#progressbarwizard').find('.bar').css({width:'15%'});
+    $("#patrimoine").hide();
+    $("#situation").fadeIn();
+    $('.sit_track').text('(1/2)');
+  })
+
+  function round(n) {
+    return Math.round(n * 100) / 100
+  }
+
+  $('select[name="versement_freq"]').on('change', ()=>{
+    cleanData();
+    getSimulationData();
+  })
+
+  $('input#pversement').on('change', getSimulationData)
+
+  $('input#pmontant').on('change', getSimulationData)
+
+  $('#newsimul').on('click', getSimulationData)
+
+  function showData(data) {
+
+    var width = 520,
+        height = 350;
+
+    nv.addGraph(function() {
+
+    var chart = nv.models.lineChart()
+      .interactive(false)
+      .showLegend(true)       //Show the legend, allowing users to turn on/off line series.
+      .showYAxis(true)        //Show the y-axis
+      .showXAxis(true)
+      .width(width)
+      .height(height);
+
+    chart.xAxis
+        .axisLabel("Temps")
+        .showMaxMin(false)
+        .tickFormat(function(d) { return d3.time.format('%m/%d/%y')(new Date(d)); });
+
+    chart.yAxis
+        .axisLabel("Valorisation")
+        .tickFormat(d3.format("d"))
+        ;
+
+    d3.select('#chart svg')
+      .datum(data)
+      .attr('width', width)
+      .attr('height', height)
+      .call(chart)
+      ;
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  }
+
+  function getSimulationData() {
+    $("#morris-area-with-dotted").empty();
+    $("#disapear").text("Chargement...");
+    $("#disapear").show();
+    let value = $("#pversement").val();
+    let freq = $('select[name="versement_freq"]').val();
+    let totalVal = value;
+    let freqval = parseInt($("#pmontant").val().trim().replace("%",""));
+    if (freq == "1") {
+      totalVal *= 10*1.2;
+    } else if (freq == "7") {
+      totalVal *= 10*1.1;
+    } else if (freq == "30") {
+      totalVal *= 10;
+    }
+    $('#totalvers').text(round(totalVal));
+    let stringData = "protection="+simulationType+"&value="+value+"&freq="+freq+"&freqval="+freqval;
+    $.ajax({
+      url: "/simulationdata",
+      type: "post",
+      data: stringData,
+      success: function(portfolioData) {
+        let vepargne = parseFloat(portfolioData[0]['values'][portfolioData[0]['values'].length-2]['y']);
+        console.log(portfolioData[0]['values'][portfolioData[0]['values'].length-1]);
+        $('#vepargne').text(round(vepargne));
+        let protec = parseFloat(portfolioData[1]['values'][portfolioData[1]['values'].length-2]['y']);
+        let proteg = round(protec);
+        $('#vproteg').text(proteg);
+        showData(portfolioData)
+        $("#disapear").hide();
+      }
+    });
+  }
+
+  function cleanData() {
+    let value = parseInt($("#pversement").val());
+    let freq = $('select[name="versement_freq"]').val();
+    let freqval = 0;
+    if (freq == "1") {
+      freqval = parseFloat(value)/250*1.2;
+    } else if (freq == "7") {
+      freqval = parseFloat(value)/52*1.1;
+    } else if (freq == "30") {
+      freqval = parseFloat(value)/12;
+    }
+    $("#pmontant").val(round(freqval));
+  }
+
+  $("#custom-width-modal").on('show.bs.modal', function() {
+    let value = 1000;
+    let epargne = parseFloat($('input[name="epargne"]').val().trim().replace("%",""));
+    let salaireAnnuel = parseFloat($('input[name="revenue"]').val());
+    if (epargne > 0) {
+      $("#pversement").val(epargne)
+      cleanData()
+    }
+    getSimulationData();
+  });
+
+  let simulationId = null;
+
+  $('button[data-target=".bs-example-modal-lg"]').on('click', function(){
+    simulationType = $(this).attr("id");
+    if (simulationType == 'custom') {
+      simulationType = $("input[name='custom_protection_level']").val().trim().replace("%","");
+    }
+    simulationId = $(this).attr("target");
+    $("#morris-area-with-dotted").empty();
+    $("#disapear").text("Chargement...");
+    $("#disapear").show();
+  });
+
+  $('a.select_simulation').on('click', function(){
+    $('.'+simulationId).click();
+    $('#progressbarwizard').bootstrapWizard('next');
+  })
+
+  $('a.submit').hide();
+
+  $('input[name="lname"]').on('keyup', function() {
+    let last_name = $(this).val();
+    let matched = last_name.match(/[^A-Za-z ]/gi) || []
+    if (matched.length > 0) {
+      $("span#lname_error").show();
+    } else {
+      $("span#lname_error").hide();
+    }
+  })
+
+  $('input[name="fname"]').on('keyup', function() {
+    let first_name = $(this).val();
+    let matched = first_name.match(/[^A-Za-z ]/gi) || []
+    if (matched.length > 0) {
+      $("span#fname_error").show();
+    } else {
+      $("span#fname_error").hide();
+    }
+  })
+
+  $('input[name="phone"]').on('keyup', function() {
+    let phone = $(this).val();
+    let matched = phone.match(/[^0-9+ ]/gi) || []
+    if (matched.length > 0) {
+      $("span#phone_error").show();
+    } else {
+      $("span#phone_error").hide();
+    }
+  })
+
+  $('input[name="address"]').on('keyup', function() {
+    let address = $(this).val();
+    let matched = address.match(/[^a-zA-Z0-9+, ]/gi) || []
+    if (matched.length > 0) {
+      $("span#address_error").show();
+    } else {
+      $("span#address_error").hide();
+    }
+  })
+
+  function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
+  $('input[name="email"]').on('keyup', function() {
+    let email = $(this).val();
+    let matched = validateEmail(email)
+    if (!matched) {
+      $("span#email_error").show();
+    } else {
+      $("span#email_error").hide();
+    }
+  })
+
+  $('input[name="confirmation"]').on('keyup', function() {
+    let confirmation = $(this).val();
+    let password = $('input[name="password"]').val()
+    if (confirmation !== password || confirmation === "") {
+      $("span#confirmation_error").show();
+      $('a.submit').hide();
+    } else {
+      $("span#confirmation_error").hide();
+      $('a.submit').fadeIn();
+    }
+  })
+
+});
+
+</script>
+
+</body>
+</html>

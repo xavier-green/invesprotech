@@ -1,0 +1,23 @@
+//Pour creer un compte
+curl --data "first_name=xavier&last_name=green&job=student&email=xav.green.95@gmail.com&password=plaintext&phone=0644851899&origin=google&account_type=0&activity_level=2&universe=2&protection=0.75&initial_type=F" -b cookies.txt -c cookies.txt localhost:3000/register
+
+//Pour se login
+curl --data "email=xav.green.95@gmail.com&password=plaintext" -b cookies.txt -c cookies.txt localhost:3000/login
+
+//Show user session (with portfolios)
+curl -i GET -b cookies.txt -c cookies.txt localhost:3000/api
+
+//Change funds (add or remove, quantity positive = retrait, quantity negative = ajout)
+curl --data "quantity=500" -b cookies.txt -c cookies.txt localhost:3000/api/changefunds
+
+//Change protection level
+curl --data "protection_level=0.8" -b cookies.txt -c cookies.txt localhost:3000/api/changeprotection
+
+//Change universe
+curl --data "investment_universe=0.8" -b cookies.txt -c cookies.txt localhost:3000/api/changeuniverse
+
+//Change universe et protection
+curl --data "investment_universe=0.8&protection_level=0.7" -b cookies.txt -c cookies.txt localhost:3000/api/changeuniverse
+
+//Fake to real
+curl -X POST -b cookies.txt -c cookies.txt localhost:3000/api/faketoreal

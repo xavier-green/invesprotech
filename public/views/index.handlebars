@@ -1,0 +1,139 @@
+  <!-- Page-Title -->
+  <div class="row">
+    <div class="col-sm-12">
+      <h4 class="page-title">Votre dashboard
+      {{#if user.email}}
+        <small>(connecté en tant que {{user.email}})</small>
+      {{/if}}
+      </h4>
+      {{#if notification}}
+        <h5 style="color:green">{{notification}}</h5>
+      {{/if}}
+      {{#if bank}}
+        <div class="row">
+          <button type="button" onClick="window.location = '/app/banque'" class="btn btn-warning waves-effect waves-light">
+             <i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Ajouter un compte bancaire pour faire votre premier versement !
+          </button>
+        </div><br/>
+      {{/if}}
+      {{#if legal}}
+      <div class="row">
+          <button type="button" onClick="window.location = '/app/legal'" class="btn btn-danger waves-effect waves-light">
+             <i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Finaliser votre contrat Milvus !
+          </button>
+        </div><br/>
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card-box">
+      <h4 class="header-title m-t-0 m-b-30">Détails de vos gains</h4>
+        <div class="row">
+          <div>
+              <div class="text-center">
+                <h4 class="text-pink"><span style="color:#505458">Total Earnings: </span><span data-plugin="counterup">{{numbs.total_earnings}}</span> €</h4>
+              </div><br/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+              <div class="text-center">
+                <h4 class="text-custom"><span style="color:#505458">Capital versé: </span><span data-plugin="counterup">{{numbs.capital}}</span> €</h4>
+              </div><br/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+              <div class="text-center">
+                <h4 class="text-success"><span style="color:#505458">Valorisation totale: </span><span data-plugin="counterup">{{numbs.valorisation}}</span> €</h4>
+              </div><br/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+              <div class="text-center">
+                <h4 style="color:#FF4500"><span style="color:#505458">Valeur totale protégée: </span><span data-plugin="counterup">{{numbs.totalProtection}}</span> €</h4>
+              </div><br/>
+          </div>
+        </div>
+      </div>
+    </div><!-- end col -->
+
+    <div class="col-lg-4">
+      <div class="card-box">
+        <h4 class="header-title m-t-0">Vos portfolios</h4>
+        <div id="morris-area-with-dotted" style="height: 300px;"></div>
+      </div>
+    </div><!-- end col -->
+
+    <div class="col-lg-4">
+      <div class="card-box">
+
+        <h4 class="header-title m-t-0">Allocations</h4>
+
+        <div class="widget-chart text-center">
+          <div id="morris-donut-example" style="height: 245px;"></div>
+          <ul class="list-inline chart-detail-list m-b-0">
+            <li>
+              <h5 style="color: #5b69bc;"><i class="fa fa-circle m-r-5"></i>Stocks</h5>
+            </li>
+            <li>
+              <h5 style="color: #35b8e0;"><i class="fa fa-circle m-r-5"></i>Bonds</h5>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- end col -->
+  </div>
+  <!-- end row -->
+
+  <div class="row">
+
+    <div class="col-lg-12">
+      <div class="card-box">
+
+      <h4 class="header-title m-t-0 m-b-30">Détails de vos portfolios
+        <span class="pull-right">
+          % <input type="checkbox" name="recurrent" data-plugin="switchery" data-color="#00b19d" data-size="small"/>
+        </span>
+        </h4>
+
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Portfolio</th>
+              <th>Protection</th>
+              <th>Capital versé</th>
+              <th>Plus/moins value</th>
+              <th>Valeur du portefeuille</th>
+              <th>Performance depuis la création</th>
+              <th>Échéance fiscale</th>
+              <th>Type</th>
+              <th>Conseils</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each user.portfolios}}
+              <tr class="portdetail" id="{{_id._id}}">
+                <td>{{name}}</td>
+                <td>{{_id.protection_level}}</td>
+                <td>{{_id.deposit_amount}}</td>
+                <td>{{_id.plus_value}}</td>
+                <td>{{_id.net_asset_value}}</td>
+                <td>+28 %</td>
+                <td>yufeng</td>
+                <td>{{_id.fiscal_type}}</td>
+                <td><span class="label label-success">Bonne</span></td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div><!-- end col -->
+
+</div>
+<!-- end row -->
