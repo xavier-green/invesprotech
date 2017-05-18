@@ -24,16 +24,133 @@
   <link href="assets/css/nivo-lightbox.css" media="screen" rel="stylesheet" type="text/css">
   <link href="assets/css/layouts/default.css" media="screen" rel="stylesheet" type="text/css">
 
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.4/jquery.fullpage.css" />
+
+  <link rel="stylesheet" href="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+    <script type="text/javascript">
+
+    get_data = function(income) {
+      const duree = 2
+      let bank_fees = income*duree*0.053
+      let bank_ligne_fees = income*duree*0.017
+      let milvus_fees = income*duree*0.015
+      if (income>50000) {
+        if (income>100000) {
+          milvus_fees = income*duree*0.01
+        } else {
+          milvus_fees = income*duree*0.0125
+        }
+      }
+      const difference = bank_fees-milvus_fees
+      $(".fees_difference").text(difference)
+      bank_ligne_fees -= milvus_fees
+      bank_fees -= (milvus_fees+bank_ligne_fees)
+      return {
+        labels: ['InvesProtech', 'Banques en ligne', 'Banques traditionnelles'],
+        series: [[milvus_fees, milvus_fees, milvus_fees],
+                [0, bank_ligne_fees, bank_ligne_fees],
+                [0, 0, bank_fees]]
+      } 
+    }
+
+      $(document).ready(function(){
+        var fchart = new Chartist.Bar('.filo', {
+          labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10'],
+          series: [
+            [1, 2, 4, 8, 6, -2, -1, -4, -6, -2]
+          ]
+        }, {
+          high: 10,
+          low: -10,
+          axisX: {
+            labelInterpolationFnc: function(value, index) {
+              return index % 2 === 0 ? value : null;
+            }
+          },
+          height: 350,
+          fullWidth: true,
+        });
+
+        // Listen for draw events on the bar chart
+        fchart.on('draw', function(data) {
+          // If this draw event is of type bar we can use the data to create additional content
+          if(data.type === 'bar') {
+            // We use the group element of the current series to append a simple circle with the bar peek coordinates and a circle radius that is depending on the value
+            data.group.append(new Chartist.Svg('circle', {
+              cx: data.x2,
+              cy: data.y2,
+              r: Math.abs(Chartist.getMultiValue(data.value)) * 2 + 5
+            }, 'ct-slice-pie'));
+          }
+        });
+        var pchart = new Chartist.Line('.protect', {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+          series: [
+            [1, 5, 2, 5, 4, 3],
+            [2, 3, 4, 8, 1, 2],
+            [5, 4, 3, 2, 1, 0.5]
+          ]
+        }, {
+          low: 0,
+          showArea: true,
+          showPoint: false,
+          fullWidth: true,
+          height: 350
+        });
+
+        pchart.on('draw', function(data) {
+          if(data.type === 'line' || data.type === 'area') {
+            data.element.animate({
+              d: {
+                begin: 2000 * data.index,
+                dur: 2000,
+                from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+                to: data.path.clone().stringify(),
+                easing: Chartist.Svg.Easing.easeOutQuint
+              }
+            });
+          }
+        });
+        let chart = new Chartist.Bar('.ct-chart', get_data(35000), {
+          stackBars: true,
+          axisY: {
+            labelInterpolationFnc: function(value) {
+              return value + '€';
+            }
+          },
+          height: 350
+        })
+        chart.on('draw', function(data) {
+          if(data.type === 'bar') {
+            data.element.attr({
+              style: 'stroke-width: 30px'
+            });
+          }
+        });
+        $(".revenu").on("change", function(){
+          const revenu = parseInt($(".revenu").val().replace(" ",""))
+          chart.update(get_data(revenu))
+        })
+      })
+    </script>
+
   <style type="text/css">
     button.sub:hover {
       text-decoration: underline;
     }
+    .section {
+      min-height: 70vh;
+      vertical-align: middle;
+      margin: auto;
+    }
   </style>
-
 </head>
 <body>
+  <div id="fullpage">
   <div class="wrapper multi-purp">
-    <header>
+    <header id="menu">
       <div class="page_head classic-vers">
         <div id="nav-container" class="nav-container" style="height: auto;">
           <nav>
@@ -61,7 +178,7 @@
                           <li><a href="#philo">Notre philosphie</a>
                           </li>
                           <li><a href="#secu">Sécurité</a></li>
-                          <li><a href="#blog">Blog</a></li>
+                          <li class="current-menu-item"><a href="/login">App</a></li>
                           <li></li>
                         </ul>
                       </div>
@@ -74,18 +191,18 @@
         </div>
       </div>
     </header>
-    <div id="rev_slider_68_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container" data-alias="web-product-dark-hero64" style="margin:0px auto;background-color:transparent;padding:0px;margin-top:0px;margin-bottom:0px;height:791px;">
-      <div id="rev_slider_68_1" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.0.7">
+    <div id="rev_slider_68_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container" data-alias="web-product-dark-hero64" style="margin:0px auto;background-color:transparent;padding:0px;margin-top:0px;margin-bottom:0px;height:400px">
+      <div id="rev_slider_68_1" class="rev_slider fullwidthabanner" style="display:none" data-version="5.0.7">
         <ul>  
          <li data-index="rs-235" data-transition="fade" data-slotamount="default"  data-easein="default" data-easeout="default" data-masterspeed="1500"  data-rotate="0"  data-saveperformance="off"  data-title="Intro" data-description="">
-          <img src="http://img.src.ca/2014/11/05/635x357/141105_149cf_famille-traditionnelle_sn635.jpg"  alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
+          <img src="http://whd.erth.biz/wp-content/uploads/mixed/dawn-sunset-dark-sunrise-2560x1440.jpg"  alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
 
           <div class="tp-caption NotGeneric-Title   tp-resizeme rs-parallaxlevel-0" 
           id="slide-19-layer-1" 
           data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
-          data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" 
-          data-fontsize="['40','70','40','35']"
-          data-lineheight="['85','70','40','35']"
+          data-y="['middle','middle','middle','middle']" data-voffset="['-200','0','0','0']" 
+          data-fontsize="['60','70','40','35']"
+          data-lineheight="['15','70','40','35']"
           data-width="none"
           data-height="none"
           data-whitespace="nowrap"
@@ -94,12 +211,12 @@
           data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" 
           data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;" 
           data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" 
-          data-start="1000" 
+          data-start="0" 
           data-splitin="chars" 
           data-splitout="none" 
           data-responsive_offset="on" 
 
-          data-elementdelay="0.05" 
+          data-elementdelay="0.03" 
 
           style="z-index: 6; white-space: nowrap">Investir et protéger votre capital
         </div>
@@ -108,7 +225,8 @@
         <div class="tp-caption NotGeneric-SubTitle   tp-resizeme rs-parallaxlevel-0" 
         id="slide-19-layer-4" 
         data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
-        data-y="['middle','middle','middle','middle']" data-voffset="['80','62','62','61']"
+        data-y="['middle','middle','middle','middle']" data-voffset="['-100','62','62','61']"
+        data-fontsize="['20','70','40','35']" 
         data-width="none"
         data-height="none"
         data-whitespace="nowrap"
@@ -118,20 +236,20 @@
         data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;" 
         data-mask_in="x:0px;y:[100%];s:inherit;e:inherit;" 
         data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" 
-        data-start="1500" 
+        data-start="800" 
         data-splitin="none" 
         data-splitout="none" 
         data-responsive_offset="on" 
 
 
-        style="z-index: 7; white-space: nowrap;">Gestion d'épargne et de patrimoine sécurisée, personnalisée, innovante
+        style="z-index: 7; white-space: nowrap">Gestion d'épargne et de patrimoine sécurisée, personnalisée, innovante
       </div>
 
       <!-- LAYER NR. 4 -->
       <div class="tp-caption NotGeneric-Icon   tp-resizeme rs-parallaxlevel-0" 
       id="slide-19-layer-8" 
       data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
-      data-y="['middle','middle','middle','middle']" data-voffset="['160','120','120','120']"
+      data-y="['middle','middle','middle','middle']" data-voffset="['-20','120','120','120']"
       data-fontsize="['20','70','40','35']" 
       data-width="none"
       data-height="none"
@@ -143,13 +261,13 @@
       data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;" 
       data-mask_in="x:0px;y:[100%];s:inherit;e:inherit;" 
       data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" 
-      data-start="2000" 
+      data-start="1200" 
       data-splitin="none" 
       data-splitout="none" 
       data-responsive_offset="on" 
 
 
-      style="z-index: 8; white-space: nowrap;"><button class="sub" style="background: transparent; border: 0px">Notre démarche</button> | <button class="sub" style="background: transparent; border: 0px">Solutions d'épargne</button> 
+      style="z-index: 8; white-space: nowrap"><button class="sub" style="background: transparent; border: 0px">Notre démarche</button> | <button class="sub" style="background: transparent; border: 0px">Solutions d'épargne</button> 
     </div>
   </li>
 </ul>
@@ -205,190 +323,210 @@
     }
   }); /*ready*/
 </script>
-<div class="container-color-one" id="pourquoi">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="presentation-two-text"><b>ProtechKapital, fondée par des experts d'investissement et de technologie, est une société de gestion d'épargne agréé par l'Autorité des marchés financiers.</b>
-          <br/><br>
-          Proposant des solutions personnalisées à chacun de nos clients, nous visons à croitre le rendement net de votre épargne par nos 3 savoir-faire:
-        </div>
-        <div class="presentation-two-list-block">
-          <ul class="presentation-two-list-ul left">
-            <li><a href="#"><i class="icon-basic-server-upload"></i><span>Recherche de rendement régulier</span></a></li>
-            <li><a href="#"><i class="icon-basic-gear"></i><span>Capital protégé à vos souhaits</span></a></li>
-          </ul>
-          <ul class="presentation-two-list-ul right">
-            <li><a href="#"><i class="icon-basic-eye"></i><span>Conseils d'optimisation fiscale</span></a></li>
-            <li><a href="#"><i class="icon-ecommerce-gift"></i><span>Minimisation des frais de gestion</span></a></li>
-          </ul>
-        </div>
-        <div class="presentation-two-text" style="margin-top: 220px">
-          Espérer plus de rendement implique une prise plus importante de risque en capital; mais nous sommes convaincus que notre méthode, combinant multi-expertise, permet de minimiser la prise de risque inutile et excessibe de votre investissement. De plus, nos conseils d'optimisation fiscale et nos faibles frais maximiseront votre rendement net afin de contribuer à la réalisation de vos futurs projets de vie.
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50">
-        <div class="presentation-two-img"><img src="https://i.stack.imgur.com/KK2up.png" style="max-width: 75%" alt=""></div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="container-color-two" id="services">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <!-- <div class="promo-text">we provide only quality</div> -->
-        <div class="promo-name">Face aux inconvénients de la gestion classique</div><br>
-        <div class="promo-text">
-          Incohérence entre le faible rendement net généré et les frais élevés payés (directs / cachés)<br>
-          Absence de proposition adaptée à votre profil<br>
-          Manque de précision sur la maîtrise de risque de votre investissemnt<br>
-          Montant minimum d'entrée arbitraire ou inaccessible
-        </div>
-        <div class="promo-border"></div>
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ms-12">
-        <div class="services-main-multi">
-          <div class="multi-serv">
-            <div class="multi-serv-icon"><i class="icon-basic-settings"></i></div>
-            <div class="multi-serv-block-list"><h2 class="multi-serv-name">Innovations Uniques</h2><p class="multi-serv-desc">
-              Protection du capital personnalisée
-            </p></div>
+<!--   <div class="container-color-one section" id="pourquoi">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="presentation-two-text"><b>ProtechKapital, fondée par des experts d'investissement et de technologie, est une société de gestion d'épargne agréé par l'Autorité des marchés financiers.</b>
+            <br/><br>
+            Proposant des solutions personnalisées à chacun de nos clients, nous visons à croitre le rendement net de votre épargne par nos 3 savoir-faire:
+          </div>
+          <div class="presentation-two-list-block">
+            <ul class="presentation-two-list-ul left">
+              <li><a href="#"><i class="icon-basic-server-upload"></i><span>Recherche de rendement régulier</span></a></li>
+              <li><a href="#"><i class="icon-basic-gear"></i><span>Capital protégé à vos souhaits</span></a></li>
+            </ul>
+            <ul class="presentation-two-list-ul right">
+              <li><a href="#"><i class="icon-basic-eye"></i><span>Conseils d'optimisation fiscale</span></a></li>
+              <li><a href="#"><i class="icon-ecommerce-gift"></i><span>Minimisation des frais de gestion</span></a></li>
+            </ul>
+          </div>
+          <div class="presentation-two-text" style="margin-top: 220px">
+            Espérer plus de rendement implique une prise plus importante de risque en capital; mais nous sommes convaincus que notre méthode, combinant multi-expertise, permet de minimiser la prise de risque inutile et excessibe de votre investissement. De plus, nos conseils d'optimisation fiscale et nos faibles frais maximiseront votre rendement net afin de contribuer à la réalisation de vos futurs projets de vie.
           </div>
         </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50">
+          <div class="presentation-two-img"><img src="https://i.stack.imgur.com/KK2up.png" style="max-width: 75%" alt=""></div>
+        </div>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ms-12 marg-xs-50px">
+    </div>
+  </div> -->
+  <div class="container-color-two section" id="services">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <!-- <div class="promo-text">we provide only quality</div> -->
+          <div class="promo-name">Face aux inconvénients de la gestion classique</div><br>
+          <div class="promo-text">
+            Incohérence entre le faible rendement net généré et les frais élevés payés (directs / cachés)<br>
+            Absence de proposition adaptée à votre profil<br>
+            Manque de précision sur la maîtrise de risque de votre investissemnt<br>
+            Montant minimum d'entrée arbitraire ou inaccessible
+          </div>
+          <div class="promo-border"></div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ms-12">
+          <div class="services-main-multi">
+            <div class="multi-serv">
+              <div class="multi-serv-icon"><i class="icon-basic-settings"></i></div>
+              <div class="multi-serv-block-list"><h2 class="multi-serv-name">Innovations Uniques</h2><p class="multi-serv-desc">
+                Protection du capital personnalisée
+              </p></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ms-12 marg-xs-50px">
+          <div class="services-main-multi">
+            <div class="multi-serv">
+             <div class="multi-serv-icon"><i class="icon-basic-clubs"></i></div>
+             <div class="multi-serv-block-list"><h2 class="multi-serv-name">Performance</h2><p class="multi-serv-desc">Diversification de sources de rendement</p></div>
+           </div>
+         </div>
+       </div>
+       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ms-12 marg-sm-50px">
         <div class="services-main-multi">
           <div class="multi-serv">
-           <div class="multi-serv-icon"><i class="icon-basic-clubs"></i></div>
-           <div class="multi-serv-block-list"><h2 class="multi-serv-name">Performance</h2><p class="multi-serv-desc">Diversification de sources de rendement</p></div>
+           <div class="multi-serv-icon"><i class="icon-ecommerce-basket-check"></i></div>
+           <div class="multi-serv-block-list"><h2 class="multi-serv-name">Engagements</h2><p class="multi-serv-desc">Faible frais & Sécurité bancaire</p></div>
          </div>
        </div>
      </div>
      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ms-12 marg-sm-50px">
       <div class="services-main-multi">
         <div class="multi-serv">
-         <div class="multi-serv-icon"><i class="icon-ecommerce-basket-check"></i></div>
-         <div class="multi-serv-block-list"><h2 class="multi-serv-name">Engagements</h2><p class="multi-serv-desc">Faible frais & Sécurité bancaire</p></div>
+         <div class="multi-serv-icon"><i class="icon-basic-lightbulb"></i></div>
+         <div class="multi-serv-block-list"><h2 class="multi-serv-name">Avantages digitaux</h2><p class="multi-serv-desc">Transparence & Accessibilité</p></div>
        </div>
      </div>
    </div>
-   <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ms-12 marg-sm-50px">
-    <div class="services-main-multi">
-      <div class="multi-serv">
-       <div class="multi-serv-icon"><i class="icon-basic-lightbulb"></i></div>
-       <div class="multi-serv-block-list"><h2 class="multi-serv-name">Avantages digitaux</h2><p class="multi-serv-desc">Transparence & Accessibilité</p></div>
-     </div>
-   </div>
- </div>
-</div>
-</div>
-</div>
-<div class="container-color-one" id="philo">
-  <div class="container">
+  </div>
+  </div>
+  </div>
+  <div class="section container-color-one" id="philo">
+    <div class="container" style="display: table-cell;width: 90%;height: 70vh;vertical-align: middle;">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50">
+          <!-- <div class="presentation-two-img"><img src="assets/img/graphe.png" style="max-width: 75%" alt=""></div> -->
+          <div class="protect"></div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="presentation-two-text"><b style="font-size: 30px">Un mécanisme de protection unique: permanente et évolutive</b>
+          <br/><br>
+          Vous définissez votre niveau de protection du capital versé. Optimisant le rendement, notre gestion rigoureuse de risque <b>vise à assurer cette protection à tout moment.</b><br><br>
+          De plus, la valeur protégée de votre portefeuille <b>évolue automatiquement à la hausse avec notre mécanisme unique de sécurisation de plus-value à tout moment</b> contre la future incertitude du maché financier. (Exemple ci-contre)<br><br>
+          A noter, vous pouvez modifier votre niveau de protection et suivre la valeur protégée de votre portefeuille à tout moment dans votre espace personnel.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section container-color-one" style="display: table-cell;width: 90%;height: 90vh;vertical-align: middle;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="presentation-two-text"><b style="font-size: 30px">Simulez votre économie de frais :</b>
+          <br/><br>
+          Pour un compte à <input class="revenu" type="text" value="30 000"/> euros, <br><br> vous économisez déjà au bout de 2 ans <b class="fees_difference">2048</b> euros <br><br> de <b>frais</b> par rapport à une banque ou un gestionnaire d'épargne classique.
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50">
+  <!--         <div class="presentation-two-img"><img src="http://www.bbc.co.uk/staticarchive/9a931a22cd516f62a3dc8805799d94e7d9fed4e6.gif" alt=""></div> -->
+        <div class="ct-chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section container-color-one">
+    <div class="container" style="display: table-cell;width: 90%;height: 70vh;vertical-align: middle;">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50" style="padding-top: 30px">
+          <div class="filo"></div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="presentation-two-text"><b style="font-size: 18px">Visant à générer du rendement régulier sur le long terme, notre philosophie est fondée sur 3 pilliers :</b>
+          <br/><br/>
+          <b>Recherche des opportunités d'investissement :</b>
+          <ul>
+            <li>Identification des phases du cycle économique de principales zones géographiques</li>
+            <li>Evaluation de l'évolution de prévisions financières</li>
+            <li>Identifications des sources de rendements bénéficiaires (pays, secteurs, actifs)</li>
+          </ul><br>
+          <b>Diversification de risques :</b>
+          <ul>
+            <li>Répartition sur différentes zones géographiques pour minimiser l'impact d'incertitude politique et de différence de croissance</li>
+            <li>Investissement sur des indices actions, obligations d'Etats, de grandes entreprises et des devises étrangères pour éviter le risque de faillite</li>
+          </ul>
+          <b>Gestion de crises économiques & financières</b>
+          <ul>
+            <li>Minimisation de l'impact de crise avec notre mécanisme de protection</li>
+          </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section container-color-one" id="secu" style="display: table-cell;width: 90%;height: 90vh;vertical-align: middle;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="presentation-two-text" style="font-size: 18px"><b style="font-size: 25px">Totale transparence & accessibilité grâce à la plateforme en ligne :</b>
+          <br/><br/>
+          Vous pouvez suivre la composition, la performance et la protection de votre épargne, effectuer des retraits et versements sur vos comptes 24h/24, 7j/7 sur notre plateforme en ligne gratuite. Vous y retrouvez également nos conseils d'expert directement dans votre espace personnel ou avec votre conseiller dédié au téléphone.
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50">
+          <div class="presentation-two-img"><img src="https://thenextweb.com/wp-content/blogs.dir/1/files/2015/03/mobile-security-laptop-fingerprint.jpg" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="container marg100" id="blog">
     <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50">
-        <div class="presentation-two-img"><img src="assets/img/graphe.png" style="max-width: 75%" alt=""></div>
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="presentation-two-text"><b style="font-size: 30px">Un mécanisme de protection unique: permanente et évolutive</b>
-        <br/><br>
-        Vous définissez votre niveau de protection du capital versé. Optimisant ke rendement, notre gestion rigoureuse de risaue <b>vise à assurer cette protection à tout moment.</b><br><br>
-        De plus, la valeur protégée de votre portefeuille <b>évolue automatiquement à la hausse avec notre mécanisme unique de sécurisation de plus-value à tout moment</b> contre la future incertitude du maché financier. (Exemple ci-contre)<br><br>
-        A noter, vous pouvez modifier votre niveau de protection et suivre la valeur protégée de votre portefeuille à tout moment dans votre espace personnel.
-        </div>
+      <div class="col-lg-12">
+        <div class="promo-name">Derniers articles du Blog</div>
+        <div class="promo-border marg50"></div>
       </div>
     </div>
-  </div>
-</div>
-<div class="container-color-one">
-  <div class="container">
     <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="presentation-two-text"><b style="font-size: 30px">Simulez votre économie de frais :</b>
-        <br/><br>
-        Pour un compte à <input type="text" value="30 000"/> euros, <br><br> vous économisez déjà au bout de 2 ans <input type="text" value="2 480" /> euros <br><br> de <b>frais</b> par rapport à une banque ou un gestionnaire d'épargne classique.
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-ms-12_marg col-ms-12">
+        <div class="blog-main ver2">
+          <div class="blog-images">
+           <div class="post-thumbnail">
+            <div class="single-item"></div>
+            <div class="single-action">
+              <span><a href="#"><i class="simple-software-pen"></i></a></span>
+            </div>
+            <img src="http://assets.huxley.com/BFS/Disciplines/finance.png" style="height: 250px" alt="">
+          </div>
         </div>
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50">
-        <div class="presentation-two-img"><img src="http://www.bbc.co.uk/staticarchive/9a931a22cd516f62a3dc8805799d94e7d9fed4e6.gif" alt=""></div>
+        <div class="blog-name"><a href="#">Pound rises as Trump warns dollar is too strong</a></div>
+        <div class="blog-text"><p>The pound rose above $1.25 on Thursday after President Trump said the dollar was ‘getting too strong’.</p></div>
+        <div class="blog-desc">
+          <ul>
+            <li><i class="icon-basic-clock"></i> 27 March, 2016 </li>
+          </ul>
+        </div>              
       </div>
     </div>
-  </div>
-</div>
-<div class="container-color-one">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50">
-        <div class="presentation-two-img"><img src="http://www.statmethods.net/graphs/images/histogram3.jpg" alt="" style="margin-top: 100px; max-width: 70%"></div>
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="presentation-two-text"><b style="font-size: 18px">Visant à générer du rendement régulier sur le long terme, notre philosophie est fondée sur 3 pilliers :</b>
-        <br/>
-        <b>Recherche des opportunités d'investissement :</b>
-        <ul>
-          <li>Identification des phases du cycle économique de principales zones géographiques</li>
-          <li>Evaluation de l'évolution de prévisionq financières</li>
-          <li>Identifications des sources de rendements bénéficiaires (pays, secteurs, actifs)</li>
-        </ul><br>
-        <b>Diversification de risques :</b>
-        <ul>
-          <li>Répartition sur différentes zones géographiques pour minimiser l'impact d'invertityde politique et de différence de coirssance</li>
-          <li>Investissement sur des indices actions, obligations d'Etats, de grandes entreprises et des devises étrangères pour éviter le risque de faillite</li>
-        </ul>
-        <b>Gestion de crise économique & financières</b>
-        <ul>
-          <li>Minimisation de l'impact de crise avec notre mécanisme de protection</li>
-        </ul>
-        Vous définissez votre niveau de protection du capital versé. Optimisant ke rendement, notre gestion rigoureuse de risaue <b>vise à assurer cette protection à tout moment.</b><br><br>
-        De plus, la valeur protégée de votre portefeuille <b>évolue automatiquement à la hausse avec notre mécanisme unique de sécurisation de plus-value à tout moment</b> contre la future incertitude du maché financier. (Exemple ci-contre)<br><br>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="container-color-one" id="secu">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="presentation-two-text" style="font-size: 18px"><b style="font-size: 25px">Totale transparence & accessibilité grâce à la plateforme en ligne :</b>
-        <br/><br/><br/>
-        Vous pouvez suivre la composition, la performance et la protection de votre épargne, effectuer des retraits et versements sur vos comptes 24h/24, 7j/7 sur notre plateforme en ligne gratuite. Vous y retrouvez également nos conseils d'expert directement dans votre espace personnel ou avec votre conseiller dédié au téléphone.
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-ms-12_marg50">
-        <div class="presentation-two-img"><img src="https://thenextweb.com/wp-content/blogs.dir/1/files/2015/03/mobile-security-laptop-fingerprint.jpg" alt="">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="container marg100" id="blog">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="promo-name">Derniers articles du Blog</div>
-      <div class="promo-border marg50"></div>
-    </div>
-  </div>
-  <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-ms-12_marg col-ms-12">
       <div class="blog-main ver2">
         <div class="blog-images">
          <div class="post-thumbnail">
           <div class="single-item"></div>
           <div class="single-action">
-            <span><a href="#"><i class="simple-software-pen"></i></a></span>
+            <span><a href="#"><i class="icon-basic-picture-multiple"></i></a></span>
           </div>
-          <img src="http://assets.huxley.com/BFS/Disciplines/finance.png" style="height: 250px" alt="">
+          <img src="http://wid.world/wp-content/themes/wid/img/thumbnails_embed/thumb-map-emerald.png" style="height: 250px" alt="">
         </div>
       </div>
-      <div class="blog-name"><a href="#">Pound rises as Trump warns dollar is too strong</a></div>
-      <div class="blog-text"><p>The pound rose above $1.25 on Thursday after President Trump said the dollar was ‘getting too strong’.</p></div>
+      <div class="blog-name"><a href="#">UK technology firms turn to Silicon Valley</a></div>
+      <div class="blog-text"><p>Industry leaders from the north of England have embarked on mission San Francisco to woo top dealmakers in the US.</p></div>
       <div class="blog-desc">
         <ul>
-          <li><i class="icon-basic-clock"></i> 27 March, 2016 </li>
+          <li><i class="icon-basic-clock"></i> 10 April, 2016 </li>
         </ul>
-      </div>              
+      </div>
     </div>
   </div>
   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-ms-12_marg col-ms-12">
@@ -397,48 +535,29 @@
        <div class="post-thumbnail">
         <div class="single-item"></div>
         <div class="single-action">
-          <span><a href="#"><i class="icon-basic-picture-multiple"></i></a></span>
+          <span><a href="#"><i class="icon-music-note-multiple"></i></a></span>
         </div>
-        <img src="http://wid.world/wp-content/themes/wid/img/thumbnails_embed/thumb-map-emerald.png" style="height: 250px" alt="">
+        <img src="http://www.leconomiste.eu/images/PicsINTERNET/Rflexion%20finance.jpg" style="height: 250px" alt="">
       </div>
     </div>
-    <div class="blog-name"><a href="#">UK technology firms turn to Silicon Valley</a></div>
-    <div class="blog-text"><p>Industry leaders from the north of England have embarked on mission San Francisco to woo top dealmakers in the US.</p></div>
+    <div class="blog-name"><a href="#">What is an ordinary working person? PMs have the answer</a></div>
+    <div class="blog-text"><p>Government consultation document on Theresa May’s education plan seems to exclude the very poor.</p></div>
     <div class="blog-desc">
       <ul>
-        <li><i class="icon-basic-clock"></i> 10 April, 2016 </li>
+        <li><i class="icon-basic-clock"></i> 7 May, 2016 </li>
       </ul>
     </div>
   </div>
-</div>
-<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-ms-12_marg col-ms-12">
-  <div class="blog-main ver2">
-    <div class="blog-images">
-     <div class="post-thumbnail">
-      <div class="single-item"></div>
-      <div class="single-action">
-        <span><a href="#"><i class="icon-music-note-multiple"></i></a></span>
-      </div>
-      <img src="http://www.leconomiste.eu/images/PicsINTERNET/Rflexion%20finance.jpg" style="height: 250px" alt="">
-    </div>
   </div>
-  <div class="blog-name"><a href="#">What is an ordinary working person? PMs have the answer</a></div>
-  <div class="blog-text"><p>Government consultation document on Theresa May’s education plan seems to exclude the very poor.</p></div>
-  <div class="blog-desc">
-    <ul>
-      <li><i class="icon-basic-clock"></i> 7 May, 2016 </li>
-    </ul>
   </div>
+  </div> -->
 </div>
-</div>
-</div>
-</div>
-<div class="footer" style="padding-bottom: 0px; min-height: 0">
+<div class="footer" style="padding-bottom: 0px; min-height: 0; margin-top: 0">
   <div class="footer-bottom">
     <div class="container">
       <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-ms-12 pull-left">
-          <div class="copyright">Copyright © 2017 Protech.</div>
+          <div class="copyright">Copyright © 2017 InvesProtech.</div>
         </div>
       </div>
     </div>

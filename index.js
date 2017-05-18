@@ -68,6 +68,7 @@ const localSigninStrategy = require('./server/security/passport-local-signin');
 passport.use('local-signin', localSigninStrategy);
 
 // Pour gérer les pages statiques
+app.use('/', express.static(path.join(__dirname, 'website')));
 app.use('/assets', express.static(path.join(__dirname, 'public/views/assets')));
 app.set('views', path.join(__dirname, 'public/views'));
 var hbs = exphbs.create({
