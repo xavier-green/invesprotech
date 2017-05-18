@@ -133,6 +133,12 @@
           const revenu = parseInt($(".revenu").val().replace(" ",""))
           chart.update(get_data(revenu))
         })
+        $('div.menu-main-menu-container ul').find('a').click(function(){
+            var $href = $(this).attr('href');
+            var $anchor = $('#'+$href).offset();
+            $('body').animate({ scrollTop: $anchor.top });
+            return false;
+        });
       })
     </script>
 
@@ -169,15 +175,14 @@
                     <div class="navbar-collapse collapse">
                       <div class="menu-main-menu-container">
                         <ul>
-                          <li class="current-menu-item"><a href="#">Accueil</a>
+                          <li class="current-menu-item"><a href="" class="link">Accueil</a>
                           </li>
-                          <li><a href="#pourquoi">Pourquoi nous</a>
+                          <li><a href="services" class="link">Pourquoi nous</a>
                           </li>
-                          <li><a href="#services">Services</a>
                           </li>
-                          <li><a href="#philo">Notre philosphie</a>
+                          <li><a href="philo" class="link">Notre philosphie</a>
                           </li>
-                          <li><a href="#secu">Sécurité</a></li>
+                          <li><a href="secu" class="link">Sécurité</a></li>
                           <li class="current-menu-item"><a href="/login">App</a></li>
                           <li></li>
                         </ul>
