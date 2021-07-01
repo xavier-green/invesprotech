@@ -1,0 +1,2 @@
+<a href="https://www.invespcro.com/blog/images/blog-images/data-driven-marketing.jpg"><img src="https://www.invespcro.com/blog/images/blog-images/data-driven-marketing.jpg" alt="The importance of data driven marketing – Statistics and Trends" width="580"></a></p>
+<p>Infographic by- <a href="https://www.invespcro.com/services/landing-page-optimization/">Invesp Landing page Design and Optimization</a>
